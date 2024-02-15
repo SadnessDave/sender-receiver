@@ -1,0 +1,58 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="sender-namespace" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="sender" targetNamespace="sender-namespace">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="sender-namespace" elementFormDefault="unqualified" targetNamespace="sender-namespace" version="1.0">
+            <xs:element name="getMessageResponse" type="tns:getMessageResponse"/>
+            <xs:element name="getRequestMessage" type="tns:getRequestMessage"/>
+            <xs:complexType name="getRequestMessage">
+                <xs:sequence>
+                    <xs:element form="qualified" name="id" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getMessageResponse">
+                <xs:sequence>
+                    <xs:element form="qualified" minOccurs="0" name="message" type="tns:message"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="message">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="author" type="xs:string"/>
+                    <xs:element minOccurs="0" name="content" type="xs:string"/>
+                    <xs:element name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="lastModifiedDate" type="tns:localDateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType final="extension restriction" name="localDateTime">
+                <xs:sequence/>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getMessageResponse">
+        <wsdl:part element="tns:getMessageResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getMessage">
+        <wsdl:part element="tns:getRequestMessage" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="sender">
+        <wsdl:operation name="getMessage">
+            <wsdl:input message="tns:getMessage" name="getMessage"> </wsdl:input>
+            <wsdl:output message="tns:getMessageResponse" name="getMessageResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="senderSoapBinding" type="tns:sender">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getMessage">
+            <soap:operation soapAction="urn:GetMessage" style="document"/>
+            <wsdl:input name="getMessage">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getMessageResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="sender">
+        <wsdl:port binding="tns:senderSoapBinding" name="SenderPort">
+            <soap:address location="http://localhost:8080/services/sender"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

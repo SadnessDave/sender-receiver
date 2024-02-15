@@ -1,0 +1,28 @@
+server:
+  port: 8085
+  address: localhost
+
+receiver:
+  kafka:
+    topic: sender_receiver
+    brokers: localhost:9092
+    group-id: receiver_1
+    enabled: false
+  rabbit:
+    enabled: false
+    exchange:
+      direct: false
+      fanout: false
+    general-properties:
+      host-name: localhost
+      username: user
+      password: password
+      virtual-host: sender_receiver_host
+      queues:
+        - name: sender_receiver_queue_1
+          routingKey: sr_key_1
+        - name: sender_receiver_queue_2
+          routingKey: sr_key_2
+    exchanges:
+      - sender_receiver_direct
+      - sender_receiver_fanout

@@ -1,0 +1,15 @@
+type Message {
+    id: Int!,
+    author: String,
+    content: String,
+    lastModifiedDate: String
+}
+
+type Query {
+    getMessages: [Message!]!
+    getMessage(id: Int!): Message
+}
+
+type Mutation {
+    sendMessage(author: String, content: String!): Message
+}

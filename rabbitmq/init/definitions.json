@@ -1,0 +1,84 @@
+{
+"queues": [
+    {
+        "name": "sender_receiver_queue_1",
+        "vhost": "sender_receiver_host",
+        "durable": true,
+        "auto_delete": false,
+        "arguments": {
+			"x-queue-type": "classic"
+		}
+    },
+	{
+        "name": "sender_receiver_queue_2",
+        "vhost": "sender_receiver_host",
+        "durable": true,
+        "auto_delete": false,
+        "arguments": {
+			"x-queue-type": "classic"
+		}
+    }
+],
+"exchanges": [
+    {
+        "name": "sender_receiver_direct",
+        "vhost": "sender_receiver_host",
+        "type": "direct",
+        "durable": true,
+        "auto_delete": false,
+        "internal": false,
+        "arguments": {}
+    },
+	{
+        "name": "sender_receiver_fanout",
+        "vhost": "sender_receiver_host",
+        "type": "fanout",
+        "durable": true,
+        "auto_delete": false,
+        "internal": false,
+        "arguments": {}
+    }
+],
+"bindings": [
+    {
+        "source": "sender_receiver_direct",
+        "vhost": "sender_receiver_host",
+        "destination": "sender_receiver_queue_1",
+        "destination_type": "queue",
+        "routing_key": "sr_key_1",
+        "arguments": {}
+    },
+	{
+        "source": "sender_receiver_direct",
+        "vhost": "sender_receiver_host",
+        "destination": "sender_receiver_queue_2",
+        "destination_type": "queue",
+        "routing_key": "sr_key_2",
+        "arguments": {}
+    }
+],
+"users": [
+    {
+      "name": "user",
+      "password": "password",
+      "tags": [
+        "administrator"
+      ],
+      "limits": {}
+    }
+],
+"vhosts": [
+  {
+	  "name": "sender_receiver_host"
+  }
+],
+"permissions": [
+  {
+    "user": "user",
+    "vhost": "sender_receiver_host",
+    "configure": ".*",
+    "write": ".*",
+    "read": ".*"
+  }
+]
+}
